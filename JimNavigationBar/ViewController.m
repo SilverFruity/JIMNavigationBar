@@ -23,10 +23,11 @@
     
      self.color = [UIColor colorWithRed:100.f/256.f green:149.f/256.f blue:237.f/256.f alpha:1.0];
     
-    [[JIMNavigationBar appearance] setReturnImage:[UIImage imageNamed:@"back"]];
+    
     [[JIMNavigationBar appearance] setShadowImage:[UIImage new]];
     [[JIMNavigationBar appearance] setBackgroundImage:[UIImage new] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
     
+    [JIMNavigationBar defaultReturnImage:[UIImage imageNamed:@"back"]];
     [JIMNavigationBar defaultCoverColor:self.color];
     [JIMNavigationBar defaultReturnImageLeftMargin:10];
     [JIMNavigationBar defaultReturnImageRightMargin:10];

@@ -22,11 +22,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly)UIView *titleView;
 @property (nonatomic, strong)UIColor *coverColor;
 
-@property (nonatomic, strong)UIImage *returnImage UI_APPEARANCE_SELECTOR;
 - (void)setShadowImage:(UIImage * _Nonnull)shadowImage UI_APPEARANCE_SELECTOR;
 - (void)setBackgroundImage:(UIImage *)backgroundImage forToolbarPosition:(UIBarPosition)topOrBottom barMetrics:(UIBarMetrics)barMetrics UI_APPEARANCE_SELECTOR;
 
 - (instancetype)initWithCaller:(UIViewController *)caller;
++ (void)defaultReturnImage:(UIImage *)returnImage;
 + (void)defaultCoverColor:(UIColor *)color;                 //默认的覆盖层颜色   clearColor
 + (void)defaultReturnImageLeftMargin:(CGFloat)leftMargin;   //返回图片的扩展左边距 16
 + (void)defaultReturnImageRightMargin:(CGFloat)rightMargin; //返回图片的扩展右边距 10

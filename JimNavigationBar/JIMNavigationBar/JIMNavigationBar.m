@@ -45,7 +45,7 @@ UIBarButtonItem * JIMBarTitleItem(NSString *title, NSDictionary *attr){
     return item;
 }
 
-
+static UIImage *JIMNavigationBarDefaultReturnImage = nil;
 static UIColor *JIMNavigationBarDefaultCoverColor = nil;
 static CGFloat JIMNavigationBarDefaultReturnImageLeftMargin = 16;
 static CGFloat JIMNavigationBarDefaultReturnImageRightMargin = 10;
@@ -66,12 +66,6 @@ static CGFloat JIMNavigationBarDefaultReturnImageRightMargin = 10;
     self.toolbar.frame = self.bounds;
 }
 
-- (void)setReturnImage:(UIImage *)returnImage{
-    if (!returnImage || CGSizeEqualToSize(returnImage.size, CGSizeZero)) return;
-    _returnImage = returnImage;
-    ((UIButton *)_backItem.customView).j_size = self.returnImage.size;
-    [((UIButton *)_backItem.customView) setImage:returnImage forState:UIControlStateNormal];
-}
 - (void)setCoverColor:(UIColor *)coverColor{
     _coverColor = coverColor;
     self.toolbar.coverView.backgroundColor = coverColor;
@@ -81,6 +75,10 @@ static CGFloat JIMNavigationBarDefaultReturnImageRightMargin = 10;
 }
 - (void)setBackgroundImage:(UIImage *)backgroundImage forToolbarPosition:(UIBarPosition)topOrBottom barMetrics:(UIBarMetrics)barMetrics{
     [self.toolbar setBackgroundImage:backgroundImage forToolbarPosition:topOrBottom barMetrics:barMetrics];
+}
++ (void)defaultReturnImage:(UIImage *)returnImage{
+    if (!returnImage || CGSizeEqualToSize(returnImage.size, CGSizeZero)) return;
+    JIMNavigationBarDefaultReturnImage = returnImage;
 }
 + (void)defaultCoverColor:(UIColor *)color{
     JIMNavigationBarDefaultCoverColor = color;
@@ -103,9 +101,11 @@ static CGFloat JIMNavigationBarDefaultReturnImageRightMargin = 10;
         [weakself.caller.navigationController popViewControllerAnimated:YES];
     }];
     _backItem = [[UIBarButtonItem alloc]initWithCustomView:button];
-    _returnImage = [UIImage imageNamed:[NSString stringWithFormat:@"JIMNavigationBar.bundle/back@%.0fx",[UIScreen mainScreen].scale]];
-    button.j_size = _returnImage.size;
-    [button setImage:_returnImage forState:UIControlStateNormal];
+    if (!JIMNavigationBarDefaultReturnImage) {
+        JIMNavigationBarDefaultReturnImage = [UIImage imageNamed:[NSString stringWithFormat:@"JIMNavigationBar.bundle/back@%.0fx",[UIScreen mainScreen].scale]];
+    }
+    button.j_size = JIMNavigationBarDefaultReturnImage.size;
+    [button setImage:JIMNavigationBarDefaultReturnImage forState:UIControlStateNormal];
     return self;
 }
 
