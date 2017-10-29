@@ -6,32 +6,32 @@
 //
 //
 
-#import "UIButton+buttonWithBlock.h"
+#import "UIButton+JIMButtonWithBlock.h"
 #import <objc/runtime.h>
 
-static char *const JMBlockCacheKey = "blockCacheKey";
+static char *const JMBlockCacheKey = "JMBlockCacheKey";
 
-@implementation UIButton (buttonWithBlock)
+@implementation UIButton (JIMButtonWithBlock)
 
-+ (instancetype )buttonWithBlock:(JkmButtonBlock)block{
-    return [[self class] buttonWithBlock:block forControlEvents:UIControlEventTouchUpInside];
++ (instancetype )jm_buttonWithBlock:(JkmButtonBlock)block{
+    return [[self class] jm_buttonWithBlock:block forControlEvents:UIControlEventTouchUpInside];
 }
 
-+ (instancetype)buttonWithBlock:(JkmButtonBlock)block forControlEvents:(UIControlEvents)event{
++ (instancetype)jm_buttonWithBlock:(JkmButtonBlock)block forControlEvents:(UIControlEvents)event{
     UIButton *button = [[[self class]alloc]init];
-    [button observeEvent:event block:block];
+    [button jm_addActionForEvent:event block:block];
     return button;
 }
 
-- (void)observeEvent:(UIControlEvents)event block:(JkmButtonBlock)block{
+- (void)jm_addActionForEvent:(UIControlEvents)event block:(JkmButtonBlock)block{
     if (block) {
         self.JMBlock = block;
     }
     [self addTarget:self action:@selector(JkmBlockButttonTouched:) forControlEvents:event];
 }
 
-- (void)addActionBlock:(JkmButtonBlock)block{
-    [self observeEvent:UIControlEventTouchUpInside block:block];
+- (void)jm_addActionBlock:(JkmButtonBlock)block{
+    [self jm_addActionForEvent:UIControlEventTouchUpInside block:block];
 }
 
 #pragma mark 点击

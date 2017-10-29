@@ -20,8 +20,9 @@
 
 - (UIImage *)cornerImageWithCornerRadius:(CGFloat)radius fillColor:(UIColor *)fillColor;
 
-- (UIImage *)imageInset:(UIEdgeInsets)insets;
+- (UIImage *)imageInternalInset:(UIEdgeInsets)insets;
 
 - (UIImage *)imageRenderWithColor:(UIColor *)color;
 
 @end
+

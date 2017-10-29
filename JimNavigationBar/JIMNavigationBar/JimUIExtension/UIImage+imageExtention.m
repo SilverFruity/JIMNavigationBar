@@ -15,7 +15,7 @@
 }
 + (UIImage *)imageWithColor:(UIColor *)color size:(CGSize)size{
     CGRect rect = CGRectMake(0, 0, size.width, size.height);
-    UIGraphicsBeginImageContextWithOptions(size, NO, IMGEX_SCREEN_SCALE);
+    UIGraphicsBeginImageContextWithOptions(size, NO, 0);
     CGContextRef context =  UIGraphicsGetCurrentContext();
     CGContextSetFillColorWithColor(context, color.CGColor);
     CGContextSetAlpha(context, CGColorGetAlpha(color.CGColor));
@@ -25,7 +25,7 @@
     return image;
 }
 - (UIImage *)resizeImage:(CGSize)size{
-    UIGraphicsBeginImageContextWithOptions(size, NO, IMGEX_SCREEN_SCALE);
+    UIGraphicsBeginImageContextWithOptions(size, NO, 0);
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     CGContextSetFillColorWithColor(ctx, [UIColor clearColor].CGColor);
     CGRect rect = CGRectMake(0, 0, size.width, size.height);
@@ -61,7 +61,7 @@
     return image;
 }
 
-- (UIImage *)imageInset:(UIEdgeInsets)insets{
+- (UIImage *)imageInternalInset:(UIEdgeInsets)insets{
     if (UIEdgeInsetsEqualToEdgeInsets(insets, UIEdgeInsetsZero)) {
         return self;
     }

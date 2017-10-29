@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B30EB9A1FA60420007B46FD /* NextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B30EB991FA60420007B46FD /* NextViewController.m */; };
+		1B7E07AD1FA223F00070FADF /* JIMNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B7E07AB1FA223CE0070FADF /* JIMNavigationBar.m */; };
+		1B7E07AE1FA223F00070FADF /* UIViewController+JIMNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B7E07A91FA223CE0070FADF /* UIViewController+JIMNavigationBar.m */; };
+		1B7E07B21FA22F3B0070FADF /* JIMNavigationBar.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1B7E07B11FA22F3B0070FADF /* JIMNavigationBar.bundle */; };
 		1B974D121F7B775200D6FB26 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B974D111F7B775200D6FB26 /* AppDelegate.m */; };
 		1B974D151F7B775200D6FB26 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B974D141F7B775200D6FB26 /* ViewController.m */; };
 		1B974D181F7B775200D6FB26 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B974D161F7B775200D6FB26 /* Main.storyboard */; };
@@ -15,11 +19,8 @@
 		1B974D201F7B775200D6FB26 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B974D1F1F7B775200D6FB26 /* main.m */; };
 		1B974D2A1F7B775200D6FB26 /* JimNavigationBarTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B974D291F7B775200D6FB26 /* JimNavigationBarTests.m */; };
 		1B974D351F7B775200D6FB26 /* JimNavigationBarUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B974D341F7B775200D6FB26 /* JimNavigationBarUITests.m */; };
-		1B974D4A1F7B779000D6FB26 /* UIViewController+JIMNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B974D471F7B779000D6FB26 /* UIViewController+JIMNavigationBar.m */; };
-		1B974D501F7B88A200D6FB26 /* JIMNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B974D4F1F7B88A200D6FB26 /* JIMNavigationBar.m */; };
-		1B974D5B1F7B991F00D6FB26 /* UIButton+buttonWithBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B974D561F7B8DA800D6FB26 /* UIButton+buttonWithBlock.m */; };
-		1B974D5C1F7B991F00D6FB26 /* UIImage+imageExtention.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B974D581F7B8DA800D6FB26 /* UIImage+imageExtention.m */; };
-		1B974D5D1F7B991F00D6FB26 /* UIView+JimFrameExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B974D5A1F7B8DA800D6FB26 /* UIView+JimFrameExtension.m */; };
+		1BE184771F8A0BF900A2D671 /* UIButton+JIMButtonWithBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BE1846D1F8A0BE200A2D671 /* UIButton+JIMButtonWithBlock.m */; };
+		1BE1847B1F8A0BF900A2D671 /* UIView+JimFrameExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BE184711F8A0BE200A2D671 /* UIView+JimFrameExtension.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1B30EB981FA60420007B46FD /* NextViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NextViewController.h; sourceTree = "<group>"; };
+		1B30EB991FA60420007B46FD /* NextViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NextViewController.m; sourceTree = "<group>"; };
+		1B7E07A91FA223CE0070FADF /* UIViewController+JIMNavigationBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+JIMNavigationBar.m"; sourceTree = "<group>"; };
+		1B7E07AA1FA223CE0070FADF /* UIViewController+JIMNavigationBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+JIMNavigationBar.h"; sourceTree = "<group>"; };
+		1B7E07AB1FA223CE0070FADF /* JIMNavigationBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JIMNavigationBar.m; sourceTree = "<group>"; };
+		1B7E07AC1FA223CE0070FADF /* JIMNavigationBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JIMNavigationBar.h; sourceTree = "<group>"; };
+		1B7E07B11FA22F3B0070FADF /* JIMNavigationBar.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = JIMNavigationBar.bundle; sourceTree = "<group>"; };
 		1B974D0D1F7B775200D6FB26 /* JimNavigationBar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JimNavigationBar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B974D101F7B775200D6FB26 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1B974D111F7B775200D6FB26 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -56,16 +64,10 @@
 		1B974D301F7B775200D6FB26 /* JimNavigationBarUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JimNavigationBarUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B974D341F7B775200D6FB26 /* JimNavigationBarUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JimNavigationBarUITests.m; sourceTree = "<group>"; };
 		1B974D361F7B775200D6FB26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1B974D461F7B779000D6FB26 /* UIViewController+JIMNavigationBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+JIMNavigationBar.h"; sourceTree = "<group>"; };
-		1B974D471F7B779000D6FB26 /* UIViewController+JIMNavigationBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+JIMNavigationBar.m"; sourceTree = "<group>"; };
-		1B974D4E1F7B88A200D6FB26 /* JIMNavigationBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JIMNavigationBar.h; sourceTree = "<group>"; };
-		1B974D4F1F7B88A200D6FB26 /* JIMNavigationBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JIMNavigationBar.m; sourceTree = "<group>"; };
-		1B974D551F7B8DA800D6FB26 /* UIButton+buttonWithBlock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+buttonWithBlock.h"; sourceTree = "<group>"; };
-		1B974D561F7B8DA800D6FB26 /* UIButton+buttonWithBlock.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+buttonWithBlock.m"; sourceTree = "<group>"; };
-		1B974D571F7B8DA800D6FB26 /* UIImage+imageExtention.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+imageExtention.h"; sourceTree = "<group>"; };
-		1B974D581F7B8DA800D6FB26 /* UIImage+imageExtention.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+imageExtention.m"; sourceTree = "<group>"; };
-		1B974D591F7B8DA800D6FB26 /* UIView+JimFrameExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+JimFrameExtension.h"; sourceTree = "<group>"; };
-		1B974D5A1F7B8DA800D6FB26 /* UIView+JimFrameExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+JimFrameExtension.m"; sourceTree = "<group>"; };
+		1BE1846C1F8A0BE200A2D671 /* UIButton+JIMButtonWithBlock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+JIMButtonWithBlock.h"; sourceTree = "<group>"; };
+		1BE1846D1F8A0BE200A2D671 /* UIButton+JIMButtonWithBlock.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+JIMButtonWithBlock.m"; sourceTree = "<group>"; };
+		1BE184701F8A0BE200A2D671 /* UIView+JimFrameExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+JimFrameExtension.h"; sourceTree = "<group>"; };
+		1BE184711F8A0BE200A2D671 /* UIView+JimFrameExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+JimFrameExtension.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,15 +118,13 @@
 		1B974D0F1F7B775200D6FB26 /* JimNavigationBar */ = {
 			isa = PBXGroup;
 			children = (
+				1BE184681F8A0BE200A2D671 /* JIMNavigationBar */,
 				1B974D101F7B775200D6FB26 /* AppDelegate.h */,
 				1B974D111F7B775200D6FB26 /* AppDelegate.m */,
-				1B974D541F7B8DA800D6FB26 /* JimUIExtension */,
-				1B974D461F7B779000D6FB26 /* UIViewController+JIMNavigationBar.h */,
-				1B974D471F7B779000D6FB26 /* UIViewController+JIMNavigationBar.m */,
-				1B974D4E1F7B88A200D6FB26 /* JIMNavigationBar.h */,
-				1B974D4F1F7B88A200D6FB26 /* JIMNavigationBar.m */,
 				1B974D131F7B775200D6FB26 /* ViewController.h */,
 				1B974D141F7B775200D6FB26 /* ViewController.m */,
+				1B30EB981FA60420007B46FD /* NextViewController.h */,
+				1B30EB991FA60420007B46FD /* NextViewController.m */,
 				1B974D161F7B775200D6FB26 /* Main.storyboard */,
 				1B974D191F7B775200D6FB26 /* Assets.xcassets */,
 				1B974D1B1F7B775200D6FB26 /* LaunchScreen.storyboard */,
@@ -152,15 +152,26 @@
 			path = JimNavigationBarUITests;
 			sourceTree = "<group>";
 		};
-		1B974D541F7B8DA800D6FB26 /* JimUIExtension */ = {
+		1BE184681F8A0BE200A2D671 /* JIMNavigationBar */ = {
 			isa = PBXGroup;
 			children = (
-				1B974D551F7B8DA800D6FB26 /* UIButton+buttonWithBlock.h */,
-				1B974D561F7B8DA800D6FB26 /* UIButton+buttonWithBlock.m */,
-				1B974D571F7B8DA800D6FB26 /* UIImage+imageExtention.h */,
-				1B974D581F7B8DA800D6FB26 /* UIImage+imageExtention.m */,
-				1B974D591F7B8DA800D6FB26 /* UIView+JimFrameExtension.h */,
-				1B974D5A1F7B8DA800D6FB26 /* UIView+JimFrameExtension.m */,
+				1B7E07AC1FA223CE0070FADF /* JIMNavigationBar.h */,
+				1B7E07AB1FA223CE0070FADF /* JIMNavigationBar.m */,
+				1B7E07AA1FA223CE0070FADF /* UIViewController+JIMNavigationBar.h */,
+				1B7E07A91FA223CE0070FADF /* UIViewController+JIMNavigationBar.m */,
+				1BE1846B1F8A0BE200A2D671 /* JimUIExtension */,
+				1B7E07B11FA22F3B0070FADF /* JIMNavigationBar.bundle */,
+			);
+			path = JIMNavigationBar;
+			sourceTree = "<group>";
+		};
+		1BE1846B1F8A0BE200A2D671 /* JimUIExtension */ = {
+			isa = PBXGroup;
+			children = (
+				1BE1846C1F8A0BE200A2D671 /* UIButton+JIMButtonWithBlock.h */,
+				1BE1846D1F8A0BE200A2D671 /* UIButton+JIMButtonWithBlock.m */,
+				1BE184701F8A0BE200A2D671 /* UIView+JimFrameExtension.h */,
+				1BE184711F8A0BE200A2D671 /* UIView+JimFrameExtension.m */,
 			);
 			path = JimUIExtension;
 			sourceTree = "<group>";
@@ -271,6 +282,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B7E07B21FA22F3B0070FADF /* JIMNavigationBar.bundle in Resources */,
 				1B974D1D1F7B775200D6FB26 /* LaunchScreen.storyboard in Resources */,
 				1B974D1A1F7B775200D6FB26 /* Assets.xcassets in Resources */,
 				1B974D181F7B775200D6FB26 /* Main.storyboard in Resources */,
@@ -298,12 +310,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1B974D5B1F7B991F00D6FB26 /* UIButton+buttonWithBlock.m in Sources */,
-				1B974D5C1F7B991F00D6FB26 /* UIImage+imageExtention.m in Sources */,
-				1B974D5D1F7B991F00D6FB26 /* UIView+JimFrameExtension.m in Sources */,
-				1B974D4A1F7B779000D6FB26 /* UIViewController+JIMNavigationBar.m in Sources */,
-				1B974D501F7B88A200D6FB26 /* JIMNavigationBar.m in Sources */,
+				1B7E07AD1FA223F00070FADF /* JIMNavigationBar.m in Sources */,
+				1B7E07AE1FA223F00070FADF /* UIViewController+JIMNavigationBar.m in Sources */,
+				1BE184771F8A0BF900A2D671 /* UIButton+JIMButtonWithBlock.m in Sources */,
+				1BE1847B1F8A0BF900A2D671 /* UIView+JimFrameExtension.m in Sources */,
 				1B974D151F7B775200D6FB26 /* ViewController.m in Sources */,
+				1B30EB9A1FA60420007B46FD /* NextViewController.m in Sources */,
 				1B974D201F7B775200D6FB26 /* main.m in Sources */,
 				1B974D121F7B775200D6FB26 /* AppDelegate.m in Sources */,
 			);
@@ -471,6 +483,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = GRD9Q48LG6;
 				INFOPLIST_FILE = JimNavigationBar/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Jiang.JimNavigationBar.JimNavigationBar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -485,6 +498,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = GRD9Q48LG6;
 				INFOPLIST_FILE = JimNavigationBar/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Jiang.JimNavigationBar.JimNavigationBar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
