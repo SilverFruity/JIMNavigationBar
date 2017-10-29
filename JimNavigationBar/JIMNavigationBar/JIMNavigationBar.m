@@ -316,18 +316,24 @@ bool CGColorEqualToColorIgnoreAlpha(CGColorRef color1,CGColorRef color2){
     [super layoutSubviews];
     //_contentInsets 
     self.subviews.firstObject.frame = CGRectMake(0, -_contentInsets.top, self.j_width, self.j_height + _contentInsets.top);
-//    旋转180°，使分割线在下方(iOS11下)
+//    旋转180°，使分割线在下方(iOS10以上版本)
     self.subviews.firstObject.transform = CGAffineTransformMakeRotation(M_PI);
     
     NSUInteger version = [UIDevice currentDevice].systemVersion.floatValue;
     if (floor(version) == 9) {
+        BOOL shadowImageIsToolBarSubView = NO;
         [self.subviews.firstObject addSubview:self.coverView];
         self.coverView.frame = self.subviews.firstObject.bounds;
         for (UIView *view in self.subviews) {
             if ([view isKindOfClass:[UIImageView class]] && CGAffineTransformEqualToTransform(view.transform, CGAffineTransformIdentity)) {
                 view.frame = CGRectMake(0, self.j_height - 0.5, self.j_width, 0.5);
+                shadowImageIsToolBarSubView = YES;
                 break;
             }
+        }
+        //说明此时shadowImageView是firstView的子视图
+        if (!shadowImageIsToolBarSubView) { 
+            self.coverView.frame = self.subviews.firstObject.frame;
         }
     }else{
         self.coverView.frame = self.subviews.firstObject.frame;
