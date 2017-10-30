@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithCaller:(UIViewController *)caller;
 + (void)defaultReturnImage:(UIImage *)returnImage;
-+ (void)defaultCoverColor:(UIColor *)color;                 //默认的覆盖层颜色   clearColor
++ (void)defaultCoverColor:(UIColor *)color;                 //默认为透明
 + (void)defaultReturnImageLeftMargin:(CGFloat)leftMargin;   //返回图片的扩展左边距 16
 + (void)defaultReturnImageRightMargin:(CGFloat)rightMargin; //返回图片的扩展右边距 10
 - (void)loadItems;

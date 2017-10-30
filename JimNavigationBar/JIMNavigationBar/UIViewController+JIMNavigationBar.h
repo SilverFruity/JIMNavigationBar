@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
  *     6. 要保持jimNavigationBar在最上层，只能通过Controller持有一个container，Controller.view是container的子视图，而jimNavigationBar也是container的子视图，但是却在Controller.view之上。但window默认显示规则为使用控制器的view来显示。就看能不能实现了...
  **/
 @interface UIViewController(JIMNavigationBar)
++(void)JIMNavigationBarMethodExChange; //在想要添加JIMNavigationBar的基类的load方法中调用
 @property (nonatomic, assign)BOOL hasSet;
 @property (nonatomic, assign)BOOL hiddenSysNavigationBar;
 @property (nonatomic, strong, readonly)JIMNavigationBar *jimNavigationBar;

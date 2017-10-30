@@ -10,6 +10,13 @@
 #import "UIViewController+JIMNavigationBar.h"
 #import "JIMNavigationBar.h"
 
+@implementation UIViewController(JIMNavigationBarMethodExChange)
++ (void)load{
+    //如果你的ViewController都有自定义基类，则将UIViewController替换为该类，如果没有就直接使用UIViewController
+    [self JIMNavigationBarMethodExChange];
+}
+@end
+
 
 @interface ViewController ()<UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -23,6 +30,7 @@
     
      self.color = [UIColor colorWithRed:100.f/256.f green:149.f/256.f blue:237.f/256.f alpha:1.0];
     
+    //需要注意的是: 要替代storyboard中的UINavigationBar时，需要确认item的customView一定是UIButton
     
     [[JIMNavigationBar appearance] setShadowImage:[UIImage new]];
     [[JIMNavigationBar appearance] setBackgroundImage:[UIImage new] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];

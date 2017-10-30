@@ -16,19 +16,18 @@ static char JIMNavigationHiddenSysNavigationBarKey;
 
 @implementation UIViewController(JIMNavigationBar)
 
-+(void)load{
-    Method viewdidLoad = class_getInstanceMethod([UIViewController  class], @selector(viewDidLoad));
-    Method j_viewDidLoad = class_getInstanceMethod([UIViewController class], @selector(j_viewDidLoad));
++(void)JIMNavigationBarMethodExChange{
+    Method viewdidLoad = class_getInstanceMethod(self, @selector(viewDidLoad));
+    Method j_viewDidLoad = class_getInstanceMethod(self, @selector(j_viewDidLoad));
     method_exchangeImplementations(viewdidLoad, j_viewDidLoad);
 
-    Method viewWillAppear = class_getInstanceMethod([UIViewController  class], @selector(viewWillAppear:));
-    Method j_viewWillAppear = class_getInstanceMethod([UIViewController class], @selector(j_viewWillAppear:));
+    Method viewWillAppear = class_getInstanceMethod(self, @selector(viewWillAppear:));
+    Method j_viewWillAppear = class_getInstanceMethod(self, @selector(j_viewWillAppear:));
     method_exchangeImplementations(viewWillAppear, j_viewWillAppear);
     
-    Method viewDidDisappear = class_getInstanceMethod([UIViewController  class], @selector(viewDidDisappear:));
-    Method j_viewDidDisappear = class_getInstanceMethod([UIViewController class], @selector(j_viewDidDisappear:));
+    Method viewDidDisappear = class_getInstanceMethod(self, @selector(viewDidDisappear:));
+    Method j_viewDidDisappear = class_getInstanceMethod(self, @selector(j_viewDidDisappear:));
     method_exchangeImplementations(viewDidDisappear, j_viewDidDisappear);
-
 }
 
 - (BOOL)isRootViewController{

@@ -66,8 +66,10 @@ static CGFloat JIMNavigationBarDefaultReturnImageRightMargin = 10;
     self.toolbar.frame = self.bounds;
 }
 
+-(UIColor *)coverColor{
+    return self.toolbar.coverView.backgroundColor;
+}
 - (void)setCoverColor:(UIColor *)coverColor{
-    _coverColor = coverColor;
     self.toolbar.coverView.backgroundColor = coverColor;
 }
 - (void)setShadowImage:(UIImage *)shadowImage{
@@ -93,7 +95,7 @@ static CGFloat JIMNavigationBarDefaultReturnImageRightMargin = 10;
 - (instancetype)initWithCaller:(UIViewController *)caller{
     self = [super initWithFrame:CGRectZero];
     self.toolbar = [[JIMToolBar alloc]initWithFrame:self.bounds];
-    self.toolbar.coverView.backgroundColor = JIMNavigationBarDefaultCoverColor?:[UIColor clearColor];
+    self.coverColor = JIMNavigationBarDefaultCoverColor?:[UIColor clearColor];
     [self addSubview:self.toolbar];
     self.caller = caller;
     __weak typeof(self) weakself = self;
@@ -206,20 +208,22 @@ static CGFloat JIMNavigationBarDefaultReturnImageRightMargin = 10;
     self.toolbar.items = items;
 
     NSUInteger totalCount = self.caller.navigationController.childViewControllers.count;
+    //背景色设置，使用上一个VC的
     if (totalCount >= 2){
-        UIColor *targetColor = self.caller.navigationController.childViewControllers[totalCount - 2].jimNavigationBar.toolbar.coverView.backgroundColor;
-        UIColor *currentColor = self.toolbar.coverView.backgroundColor;
+        UIColor *targetColor = self.caller.navigationController.childViewControllers[totalCount - 2].jimNavigationBar.coverColor;
+        UIColor *currentColor = self.coverColor;
         UIColor *markColor = JIMNavigationBarDefaultCoverColor?:[UIColor clearColor];
         if (!CGColorEqualToColorIgnoreAlpha(targetColor.CGColor, markColor.CGColor)
             && CGColorEqualToColorIgnoreAlpha(currentColor.CGColor, markColor.CGColor)) {
-            self.toolbar.coverView.backgroundColor = targetColor;
+            self.coverColor = targetColor;
         }
     }
 }
 
-//忽略alpha通道值
+//比较两个UIColor颜色是否相同,忽略alpha通道值
 bool CGColorEqualToColorIgnoreAlpha(CGColorRef color1,CGColorRef color2){
-    const CGFloat *a = CGColorGetComponents(color1);
+    if(!color1 || !color2) return false;
+    const CGFloat *a = CGColorGetComponents(color1); // R G B A 数组长度是CGColorSpaceGetNumberOfComponents + 1
     const CGFloat *b = CGColorGetComponents(color2);
     NSUInteger aCount = CGColorSpaceGetNumberOfComponents(CGColorGetColorSpace(color1));
     NSUInteger bCount = CGColorSpaceGetNumberOfComponents(CGColorGetColorSpace(color2));
@@ -234,7 +238,8 @@ bool CGColorEqualToColorIgnoreAlpha(CGColorRef color1,CGColorRef color2){
     
     
     UIBarButtonItem *targetItem  =  isLeft?barButtonItems.firstObject:barButtonItems.lastObject;
-    if (![targetItem.customView isKindOfClass:[UIButton class]]) return;
+    
+    NSAssert([targetItem.customView isKindOfClass:[UIButton class]], @"customView must be UIButton");
     
     { //针对AttributedString为nil的button
         [self itemsSetAttributes:barButtonItems state:UIControlStateNormal];
