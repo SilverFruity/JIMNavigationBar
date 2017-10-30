@@ -235,9 +235,10 @@ bool CGColorEqualToColorIgnoreAlpha(CGColorRef color1,CGColorRef color2){
 }
 
 - (void)setButtonEdges:(NSArray <UIBarButtonItem *>*)barButtonItems isLeft:(BOOL)isLeft{
-    
-    
+
     UIBarButtonItem *targetItem  =  isLeft?barButtonItems.firstObject:barButtonItems.lastObject;
+    
+    if (!targetItem) return;
     
     NSAssert([targetItem.customView isKindOfClass:[UIButton class]], @"customView must be UIButton");
     

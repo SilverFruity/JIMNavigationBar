@@ -29,9 +29,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (UIBarButtonItem *)itemWithImage:(UIImage *)image block:(nullable void(^)(id sender))block;
 + (UIBarButtonItem *)itemWithImageName:(NSString *)imageName block:(nullable void(^)(id sender))block;
 
-//  使用时的请注意: 如果要设置全局，请将两个都一起设置，不然普通一个字体，高亮一个字体
-//  [[UIBarButtonItem appearance] setTitleTextAttributes:@{} forState:UIControlStateNormal];
-//  [[UIBarButtonItem appearance] setTitleTextAttributes:@{} forState:UIControlStateHighlighted];
 + (UIBarButtonItem *)itemWithNormalTitle:(NSAttributedString *)normalTitle
                         highlightedTitle:(nullable NSAttributedString *)highlighted
                                    block:(void (^)(id sender))block;

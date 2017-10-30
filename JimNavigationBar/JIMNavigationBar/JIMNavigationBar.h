@@ -26,7 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setBackgroundImage:(UIImage *)backgroundImage forToolbarPosition:(UIBarPosition)topOrBottom barMetrics:(UIBarMetrics)barMetrics UI_APPEARANCE_SELECTOR;
 
 - (instancetype)initWithCaller:(UIViewController *)caller;
-+ (void)defaultReturnImage:(UIImage *)returnImage;
+
++ (void)defaultReturnImage:(UIImage *)returnImage;          //默认返回图片
 + (void)defaultCoverColor:(UIColor *)color;                 //默认为透明
 + (void)defaultReturnImageLeftMargin:(CGFloat)leftMargin;   //返回图片的扩展左边距 16
 + (void)defaultReturnImageRightMargin:(CGFloat)rightMargin; //返回图片的扩展右边距 10

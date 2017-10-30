@@ -12,7 +12,7 @@
 
 @implementation UIViewController(JIMNavigationBarMethodExChange)
 + (void)load{
-    //如果你的ViewController都有自定义基类，则将UIViewController替换为该类，如果没有就直接使用UIViewController
+    //如果你的ViewController都有自定义基类，则将`UIViewController`替换为该类，如果没有就直接使用UIViewController
     [self JIMNavigationBarMethodExChange];
 }
 @end
@@ -24,6 +24,13 @@
 @end
 
 @implementation ViewController
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+}
+- (void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];

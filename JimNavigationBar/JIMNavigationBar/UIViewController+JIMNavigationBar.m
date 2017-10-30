@@ -17,17 +17,59 @@ static char JIMNavigationHiddenSysNavigationBarKey;
 @implementation UIViewController(JIMNavigationBar)
 
 +(void)JIMNavigationBarMethodExChange{
-    Method viewdidLoad = class_getInstanceMethod(self, @selector(viewDidLoad));
+#if DEBUG
+    static NSMutableDictionary *MethodsHasExChangedCache = nil; //检测父类是否已经交换过方法
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        MethodsHasExChangedCache = [NSMutableDictionary dictionary];
+    });
+    Class currentClass = [self superclass];
+    while (![NSStringFromClass(currentClass) isEqualToString:@"UIResponder"]) { //针对先是父类交换后，子类再进行交换的情况
+        NSNumber *hasExChanged = [MethodsHasExChangedCache valueForKey:NSStringFromClass(currentClass)];
+        if (hasExChanged){
+            NSAssert2(!hasExChanged, @"has Exchanged superClass(%@)'s Methods, currentClass is %@",currentClass,self);
+        }
+        currentClass = [currentClass superclass];
+    }
+    for (NSString *class in MethodsHasExChangedCache.allKeys) { //针对先是子类交换后，父类再进行交换的情况
+        NSString *superClassString = NSStringFromClass(NSClassFromString(class).superclass);
+        BOOL hasExChanged = [superClassString isEqualToString:NSStringFromClass(self)];
+        NSAssert2(!hasExChanged, @"has Exchanged superClass(%@)'s Methods, currentClass is %@",self,class);
+    }
+#endif
+    
+    Method viewDidLoad = class_getInstanceMethod(self, @selector(viewDidLoad));
     Method j_viewDidLoad = class_getInstanceMethod(self, @selector(j_viewDidLoad));
-    method_exchangeImplementations(viewdidLoad, j_viewDidLoad);
+    method_exchangeImplementations(viewDidLoad, j_viewDidLoad);
 
     Method viewWillAppear = class_getInstanceMethod(self, @selector(viewWillAppear:));
     Method j_viewWillAppear = class_getInstanceMethod(self, @selector(j_viewWillAppear:));
+#if DEBUG
+    //如果是UIViewController的子类，则不能交换UIViewController的方法实现，需要自己实现改方法并调用super
+    if (![NSStringFromClass(self) isEqualToString:@"UIViewController"]) {
+        IMP willAppear1 = class_getMethodImplementation(self, @selector(viewWillAppear:));
+        IMP willAppear2 = class_getMethodImplementation([UIViewController class], @selector(viewWillAppear:));
+        NSAssert(willAppear1 != willAppear2, @"%@ need implement method `viewWillAppear:`",self);
+    }
+#endif
     method_exchangeImplementations(viewWillAppear, j_viewWillAppear);
+
     
     Method viewDidDisappear = class_getInstanceMethod(self, @selector(viewDidDisappear:));
     Method j_viewDidDisappear = class_getInstanceMethod(self, @selector(j_viewDidDisappear:));
+#if DEBUG
+    //如果是UIViewController的子类，则不能交换UIViewController的方法实现，需要自己实现改方法并调用super
+    if (![NSStringFromClass(self) isEqualToString:@"UIViewController"]) {
+        IMP willAppear1 = class_getMethodImplementation(self, @selector(viewDidDisappear:));
+        IMP willAppear2 = class_getMethodImplementation([UIViewController class], @selector(viewDidDisappear:));
+        NSAssert(willAppear1 != willAppear2, @"%@ need implement method `viewDidDisappear:`",self);
+    }
+#endif
     method_exchangeImplementations(viewDidDisappear, j_viewDidDisappear);
+    
+#if DEBUG
+    [MethodsHasExChangedCache setValue:@(YES) forKey:NSStringFromClass(self)];
+#endif
 }
 
 - (BOOL)isRootViewController{
@@ -170,7 +212,7 @@ static char JIMNavigationHiddenSysNavigationBarKey;
         normalAttributes = @{NSFontAttributeName:[UIFont systemFontOfSize:16]};
     }
     if (!highlightedAttributes) {
-       highlightedAttributes = @{NSFontAttributeName:[UIFont systemFontOfSize:16],
+       highlightedAttributes = @{NSFontAttributeName:normalAttributes[NSFontAttributeName],
                                  NSForegroundColorAttributeName:[UIColor lightGrayColor]};
     }
     NSAttributedString *normalTitle = [[NSAttributedString alloc]initWithString:title attributes:normalAttributes];
@@ -183,9 +225,4 @@ static char JIMNavigationHiddenSysNavigationBarKey;
     NSArray <NSAttributedString *>*titles = [self itemAttributedTitlesWithTitle:title];
     return [self itemWithNormalTitle:titles.firstObject highlightedTitle:titles.lastObject block:block];
 }
-
-
-
-
-
 @end
