@@ -52,7 +52,7 @@
                     <navigationItem key="navigationItem" id="AuX-Ru-Z1E">
                         <nil key="title"/>
                         <leftBarButtonItems>
-                            <barButtonItem style="plain" id="mJz-5E-bMW">
+                            <barButtonItem id="mJz-5E-bMW">
                                 <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="KAg-mD-PTy">
                                     <rect key="frame" x="16" y="7" width="30" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -62,7 +62,7 @@
                                     </connections>
                                 </button>
                             </barButtonItem>
-                            <barButtonItem style="plain" id="7Ml-Bu-ds6">
+                            <barButtonItem id="7Ml-Bu-ds6">
                                 <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="OfH-aJ-8kI">
                                     <rect key="frame" x="54" y="7" width="30" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -87,22 +87,6 @@
                                 <constraint firstItem="mqp-cA-znw" firstAttribute="centerX" secondItem="y6F-CZ-Lds" secondAttribute="centerX" id="U0B-2P-cOc"/>
                             </constraints>
                         </view>
-                        <rightBarButtonItems>
-                            <barButtonItem style="plain" id="Tzh-AE-LLq">
-                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="bJY-wa-0Vw">
-                                    <rect key="frame" x="329" y="7" width="30" height="30"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <state key="normal" title="右1"/>
-                                </button>
-                            </barButtonItem>
-                            <barButtonItem style="plain" id="7Js-Az-su8">
-                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="WKP-bR-B5I">
-                                    <rect key="frame" x="291" y="7" width="30" height="30"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <state key="normal" title="右2"/>
-                                </button>
-                            </barButtonItem>
-                        </rightBarButtonItems>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
@@ -132,10 +116,11 @@
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
                         </textField>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="GZf-a2-D55">
+                        <barButtonItem key="rightBarButtonItem" id="GZf-a2-D55">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="6Kb-5O-Zix">
                                 <rect key="frame" x="313" y="7" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
                                 <state key="normal" title="Button"/>
                                 <connections>
                                     <segue destination="DTs-Ch-QyA" kind="show" id="QDz-Vy-hEd"/>

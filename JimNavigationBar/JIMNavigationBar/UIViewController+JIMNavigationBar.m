@@ -177,9 +177,8 @@ static char JIMNavigationHiddenSysNavigationBarKey;
 
 + (UIBarButtonItem *)itemWithImage:(UIImage *)image block:(void(^)(id sender))block{
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage *newImage = image;
-    button.j_size = newImage.size;
-    [button setImage:newImage forState:UIControlStateNormal];
+    button.j_size = image.size;
+    [button setImage:image forState:UIControlStateNormal];
     [button jm_addActionForEvent:UIControlEventTouchUpInside block:block];
     UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithCustomView:button];
     return item;
@@ -189,22 +188,60 @@ static char JIMNavigationHiddenSysNavigationBarKey;
     return [self itemWithImage:image block:block];
 }
 
++ (UIBarButtonItem *)itemWithImage:(UIImage *)image target:(nullable id)target action:(SEL)action{
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.j_size = image.size;
+    [button setImage:image forState:UIControlStateNormal];
+    [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithCustomView:button];
+    return item;
+}
++ (UIBarButtonItem *)itemWithImageName:(NSString *)imageName target:(nullable id)target action:(SEL)action{
+    UIImage *image = [UIImage imageNamed:imageName];
+    return [self itemWithImage:image target:target action:action];
+}
+
 + (UIBarButtonItem *)itemWithNormalTitle:(NSAttributedString *)normalTitle
-                        highlightedTitle:(NSAttributedString *)highlighted
+                        highlightedTitle:(NSAttributedString *)highlightedTitle
                                    block:(void (^)(id sender))block{
-    UIButton *button  = [UIButton jm_buttonWithBlock:block];
-    [button setAttributedTitle:normalTitle forState:UIControlStateNormal];
-    NSAttributedString *highlightedTitle = highlighted;
-    if (!highlightedTitle) {
-        NSMutableAttributedString *mutableStr = [normalTitle mutableCopy];
-        [mutableStr addAttribute:NSForegroundColorAttributeName value:[UIColor lightGrayColor] range:NSMakeRange(0, normalTitle.length)];
-        highlightedTitle = [mutableStr copy];
-    }
-    [button setAttributedTitle:highlightedTitle forState:UIControlStateHighlighted];
+    UIButton *button  = [self buttonWithNormalTitle:normalTitle highlightedTitle:highlightedTitle];
+    [button jm_addActionForEvent:UIControlEventTouchUpInside block:block];
     UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithCustomView:button];
     return item;
 }
 
++ (UIBarButtonItem *)itemWithTitle:(NSString *)title block:(nullable void (^)(id sender))block{
+    NSArray <NSAttributedString *>*titles = [self itemAttributedTitlesWithTitle:title];
+    return [self itemWithNormalTitle:titles.firstObject highlightedTitle:titles.lastObject block:block];
+}
+
++ (UIBarButtonItem *)itemWithNormalTitle:(NSAttributedString *)normalTitle
+                        highlightedTitle:(nullable NSAttributedString *)highlightedTitle
+                                  target:(nullable id)target
+                                  action:(SEL)action{
+    UIButton *button = [self buttonWithNormalTitle:normalTitle highlightedTitle:highlightedTitle];
+    [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    return [UIBarButtonItem new];
+}
+
++ (UIBarButtonItem *)itemWithTitle:(NSString *)title target:(nullable id)target action:(SEL)action{
+    NSArray <NSAttributedString *>*titles = [self itemAttributedTitlesWithTitle:title];
+    return [self itemWithNormalTitle:titles.firstObject highlightedTitle:titles.lastObject target:target action:action];
+}
+
++ (UIButton *)buttonWithNormalTitle:(NSAttributedString *)normalTitle
+                   highlightedTitle:(NSAttributedString *)highlightedTitle{
+    UIButton *button  = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setAttributedTitle:normalTitle forState:UIControlStateNormal];
+    NSAttributedString *highlighted = highlightedTitle;
+    if (!highlighted) {
+        NSMutableAttributedString *mutableStr = [normalTitle mutableCopy];
+        [mutableStr addAttribute:NSForegroundColorAttributeName value:[UIColor lightGrayColor] range:NSMakeRange(0, normalTitle.length)];
+        highlighted = [mutableStr copy];
+    }
+    [button setAttributedTitle:highlighted forState:UIControlStateHighlighted];
+    return button;
+}
 + (NSArray <NSAttributedString *>*)itemAttributedTitlesWithTitle:(NSString *)title{
     NSDictionary *normalAttributes = [[UIBarButtonItem appearance] titleTextAttributesForState:UIControlStateNormal];
     NSDictionary *highlightedAttributes = [[UIBarButtonItem appearance] titleTextAttributesForState:UIControlStateHighlighted];
@@ -212,17 +249,12 @@ static char JIMNavigationHiddenSysNavigationBarKey;
         normalAttributes = @{NSFontAttributeName:[UIFont systemFontOfSize:16]};
     }
     if (!highlightedAttributes) {
-       highlightedAttributes = @{NSFontAttributeName:normalAttributes[NSFontAttributeName],
-                                 NSForegroundColorAttributeName:[UIColor lightGrayColor]};
+        highlightedAttributes = @{NSFontAttributeName:normalAttributes[NSFontAttributeName],
+                                  NSForegroundColorAttributeName:[UIColor lightGrayColor]};
     }
     NSAttributedString *normalTitle = [[NSAttributedString alloc]initWithString:title attributes:normalAttributes];
     NSAttributedString *highlightedTitle = [[NSAttributedString alloc]initWithString:title attributes:highlightedAttributes];
     
     return @[normalTitle,highlightedTitle];
-}
-
-+ (UIBarButtonItem *)itemWithTitle:(NSString *)title block:(nullable void (^)(id sender))block{
-    NSArray <NSAttributedString *>*titles = [self itemAttributedTitlesWithTitle:title];
-    return [self itemWithNormalTitle:titles.firstObject highlightedTitle:titles.lastObject block:block];
 }
 @end

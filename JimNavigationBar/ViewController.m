@@ -38,7 +38,7 @@
      self.color = [UIColor colorWithRed:100.f/256.f green:149.f/256.f blue:237.f/256.f alpha:1.0];
     
     //需要注意的是: 要替代storyboard中的UINavigationBar时，需要确认item的customView一定是UIButton
-    
+
     [[JIMNavigationBar appearance] setShadowImage:[UIImage new]];
     [[JIMNavigationBar appearance] setBackgroundImage:[UIImage new] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
     
@@ -55,7 +55,10 @@
                                                            NSFontAttributeName:[UIFont systemFontOfSize:14]}
                                                 forState:UIControlStateHighlighted];
     
-   
+    UIBarButtonItem *righItem1 = [UIBarButtonItem itemWithTitle:@"右1" block:nil];
+    UIBarButtonItem *rightItem2 = [UIBarButtonItem itemWithTitle:@"右2" block:nil];
+    self.navigationItem.rightBarButtonItems = @[righItem1,rightItem2];
+    
     self.scrollView.delegate = self;
     self.scrollView.contentSize = [UIScreen mainScreen].bounds.size;
     if (@available(iOS 11, *)) {
