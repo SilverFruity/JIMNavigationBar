@@ -173,6 +173,7 @@ static char JIMNavigationHiddenSysNavigationBarKey;
 
 @end
 
+static char JIMNavigationBarAutoResizeKey;
 @implementation UIBarButtonItem(JIMNavigationBarBarButtonItem)
 
 + (UIBarButtonItem *)itemWithImage:(UIImage *)image block:(void(^)(id sender))block{
@@ -256,5 +257,14 @@ static char JIMNavigationHiddenSysNavigationBarKey;
     NSAttributedString *highlightedTitle = [[NSAttributedString alloc]initWithString:title attributes:highlightedAttributes];
     
     return @[normalTitle,highlightedTitle];
+}
+
+- (BOOL)autoResize{
+    NSNumber *resize = objc_getAssociatedObject(self, &JIMNavigationBarAutoResizeKey);
+    return resize?resize.boolValue : YES;
+}
+
+- (void)setAutoResize:(BOOL)autoResize{
+    objc_setAssociatedObject(self, &JIMNavigationBarAutoResizeKey, @(autoResize), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 @end

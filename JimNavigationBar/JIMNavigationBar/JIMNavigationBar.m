@@ -239,6 +239,7 @@ bool CGColorEqualToColorIgnoreAlpha(CGColorRef color1,CGColorRef color2){
     UIBarButtonItem *targetItem  =  isLeft?barButtonItems.firstObject:barButtonItems.lastObject;
     
     if (!targetItem) return;
+    if (!targetItem.autoResize) return;
     
     NSAssert([targetItem.customView isKindOfClass:[UIButton class]], @"customView must be UIButton");
     
@@ -262,8 +263,8 @@ bool CGColorEqualToColorIgnoreAlpha(CGColorRef color1,CGColorRef color2){
         }
         contentSize = CGSizeMake(ceil(size.width), size.height);
     }
-    UIEdgeInsets insets = JIMBarItemImageInsets(isLeft, contentSize);
     
+    UIEdgeInsets insets = JIMBarItemImageInsets(isLeft, contentSize);
     //增大返回按钮的点击区域
     if (button == _backItem.customView) {
         insets = UIEdgeInsetsMake(insets.top, JIMNavigationBarDefaultReturnImageLeftMargin, insets.bottom, JIMNavigationBarDefaultReturnImageRightMargin);

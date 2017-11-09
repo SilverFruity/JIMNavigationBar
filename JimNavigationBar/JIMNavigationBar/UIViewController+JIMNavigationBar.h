@@ -26,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIBarButtonItem(JIMNavigationBarBarButtonItem)
 
+@property (nonatomic)BOOL autoResize; //主要针对最左边和最右边的按钮是否需要自动重新调整大小
+
 ///图片
 //Block
 + (UIBarButtonItem *)itemWithImage:(UIImage *)image block:(nullable void(^)(id sender))block;
