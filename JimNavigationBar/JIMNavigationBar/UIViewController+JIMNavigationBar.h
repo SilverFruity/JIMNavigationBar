@@ -1,9 +1,9 @@
 //
-//  NavigationBarVC.h
-//  SharedGym
+//  UIBarButtonItem+JIMNavigationBar.h
+//  JimNavigationBar
 //
 //  Created by Jiang on 2017/9/17.
-//
+//  
 
 #import <UIKit/UIKit.h>
 @class JIMNavigationBar;
@@ -22,35 +22,5 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign)BOOL hiddenSysNavigationBar;
 @property (nonatomic, strong, readonly)JIMNavigationBar *jimNavigationBar;
 - (BOOL)isRootViewController;
-@end
-
-@interface UIBarButtonItem(JIMNavigationBarBarButtonItem)
-
-@property (nonatomic)BOOL autoResize; //主要针对最左边和最右边的按钮是否需要自动重新调整大小
-
-///图片
-//Block
-+ (UIBarButtonItem *)itemWithImage:(UIImage *)image block:(nullable void(^)(id sender))block;
-+ (UIBarButtonItem *)itemWithImageName:(NSString *)imageName block:(nullable void(^)(id sender))block;
-
-//Selector
-+ (UIBarButtonItem *)itemWithImage:(UIImage *)image target:(nullable id)target action:(SEL)action;
-+ (UIBarButtonItem *)itemWithImageName:(NSString *)imageName target:(nullable id)target action:(SEL)action;
-
-///文字
-//Block
-+ (UIBarButtonItem *)itemWithNormalTitle:(NSAttributedString *)normalTitle
-                        highlightedTitle:(nullable NSAttributedString *)highlightedTitle
-                                   block:(void (^)(id sender))block;
-
-+ (UIBarButtonItem *)itemWithTitle:(NSString *)title block:(nullable void (^)(id sender))block;
-
-//Selector
-+ (UIBarButtonItem *)itemWithNormalTitle:(NSAttributedString *)normalTitle
-                        highlightedTitle:(nullable NSAttributedString *)highlightedTitle
-                                  target:(nullable id)target
-                                  action:(SEL)action;
-
-+ (UIBarButtonItem *)itemWithTitle:(NSString *)title target:(nullable id)target action:(SEL)action;
 @end
 NS_ASSUME_NONNULL_END

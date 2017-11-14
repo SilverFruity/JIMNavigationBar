@@ -1,15 +1,14 @@
 //
-//  NavigationBarVC.m
-//  SharedGym
+//  UIBarButtonItem+JIMNavigationBar.m
+//  JimNavigationBar
 //
 //  Created by Jiang on 2017/9/17.
 //
 
 #import "UIViewController+JIMNavigationBar.h"
 #import "JIMNavigationBar.h"
-#import "UIButton+JIMButtonWithBlock.h"
-#import "UIView+JimFrameExtension.h"
 #import <objc/runtime.h>
+
 static char JIMNavigationBarKey;
 static char JIMNavigationSetKey;
 static char JIMNavigationHiddenSysNavigationBarKey;
@@ -37,10 +36,6 @@ static char JIMNavigationHiddenSysNavigationBarKey;
         NSAssert2(!hasExChanged, @"has Exchanged superClass(%@)'s Methods, currentClass is %@",self,class);
     }
 #endif
-    
-    Method viewDidLoad = class_getInstanceMethod(self, @selector(viewDidLoad));
-    Method j_viewDidLoad = class_getInstanceMethod(self, @selector(j_viewDidLoad));
-    method_exchangeImplementations(viewDidLoad, j_viewDidLoad);
 
     Method viewWillAppear = class_getInstanceMethod(self, @selector(viewWillAppear:));
     Method j_viewWillAppear = class_getInstanceMethod(self, @selector(j_viewWillAppear:));
@@ -54,23 +49,42 @@ static char JIMNavigationHiddenSysNavigationBarKey;
 #endif
     method_exchangeImplementations(viewWillAppear, j_viewWillAppear);
 
-    
-    Method viewDidDisappear = class_getInstanceMethod(self, @selector(viewDidDisappear:));
-    Method j_viewDidDisappear = class_getInstanceMethod(self, @selector(j_viewDidDisappear:));
-#if DEBUG
+
+#if !__has_feature(objc_arc)
+    Method dealloc = class_getInstanceMethod(self, @selector(dealloc));
+    Method j_dealloc = class_getInstanceMethod(self, @selector(j_dealloc));
+    method_exchangeImplementations(dealloc, j_dealloc);
+    #if DEBUG
     //如果是UIViewController的子类，则不能交换UIViewController的方法实现，需要自己实现改方法并调用super
     if (![NSStringFromClass(self) isEqualToString:@"UIViewController"]) {
-        IMP willAppear1 = class_getMethodImplementation(self, @selector(viewDidDisappear:));
-        IMP willAppear2 = class_getMethodImplementation([UIViewController class], @selector(viewDidDisappear:));
-        NSAssert(willAppear1 != willAppear2, @"%@ need implement method `viewDidDisappear:`",self);
+        IMP dealloc1 = class_getMethodImplementation(self, @selector(dealloc));
+        IMP dealloc2 = class_getMethodImplementation([UIViewController class], @selector(dealloc));
+        NSAssert(dealloc1 != dealloc2, @"%@ need implement method `dealloc`",self);
     }
+    #endif
+    
+#else
+    NSAssert(NO, @"请将UIViewController+JIMNavigationBar.m 改为-fno-objc-arc");
 #endif
-    method_exchangeImplementations(viewDidDisappear, j_viewDidDisappear);
+    
     
 #if DEBUG
     [MethodsHasExChangedCache setValue:@(YES) forKey:NSStringFromClass(self)];
 #endif
 }
+
+#if !__has_feature(objc_arc)
+- (void)j_dealloc{
+    //移除 KVO
+    [self removeObserver:self forKeyPath:@"navigationItem.leftBarButtonItem"];
+    [self removeObserver:self forKeyPath:@"navigationItem.leftBarButtonItems"];
+    [self removeObserver:self forKeyPath:@"navigationItem.rightBarButtonItem"];
+    [self removeObserver:self forKeyPath:@"navigationItem.rightBarButtonItems"];
+    [self removeObserver:self forKeyPath:@"navigationItem.title"];
+    [self removeObserver:self forKeyPath:@"navigationItem.titleView"];
+    [self j_dealloc];
+}
+#endif
 
 - (BOOL)isRootViewController{
     return self.navigationController.childViewControllers.firstObject == self;
@@ -101,12 +115,6 @@ static char JIMNavigationHiddenSysNavigationBarKey;
     objc_setAssociatedObject(self, &JIMNavigationHiddenSysNavigationBarKey, @(hiddenSysNavigationBar), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)j_viewDidLoad{
-    [self j_viewDidLoad];
-    if ([self.parentViewController isKindOfClass:[UINavigationController class]] && self.hiddenSysNavigationBar){
-        self.navigationController.view.backgroundColor = [UIColor whiteColor];
-    }
-}
 
 - (void)j_viewWillAppear:(BOOL)animated{
     [self j_viewWillAppear:animated];
@@ -139,21 +147,6 @@ static char JIMNavigationHiddenSysNavigationBarKey;
     }
 }
 
-- (void)j_viewDidDisappear:(BOOL)animated{
-    [self j_viewDidDisappear:animated];
-    if (self.navigationController || !self.hasSet) {
-        return;
-    }
-    //移除 KVO
-    [self removeObserver:self forKeyPath:@"navigationItem.leftBarButtonItem"];
-    [self removeObserver:self forKeyPath:@"navigationItem.leftBarButtonItems"];
-    [self removeObserver:self forKeyPath:@"navigationItem.rightBarButtonItem"];
-    [self removeObserver:self forKeyPath:@"navigationItem.rightBarButtonItems"];
-    [self removeObserver:self forKeyPath:@"navigationItem.title"];
-    [self removeObserver:self forKeyPath:@"navigationItem.titleView"];
-}
-
-
 - (void)addNavigationItemsObserver{
     //KVO
     [self addObserver:self forKeyPath:@"navigationItem.leftBarButtonItem" options:NSKeyValueObservingOptionNew context:nil];
@@ -173,98 +166,4 @@ static char JIMNavigationHiddenSysNavigationBarKey;
 
 @end
 
-static char JIMNavigationBarAutoResizeKey;
-@implementation UIBarButtonItem(JIMNavigationBarBarButtonItem)
 
-+ (UIBarButtonItem *)itemWithImage:(UIImage *)image block:(void(^)(id sender))block{
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.j_size = image.size;
-    [button setImage:image forState:UIControlStateNormal];
-    [button jm_addActionForEvent:UIControlEventTouchUpInside block:block];
-    UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithCustomView:button];
-    return item;
-}
-+ (UIBarButtonItem *)itemWithImageName:(NSString *)imageName block:(nullable void(^)(id sender))block{
-    UIImage *image = [UIImage imageNamed:imageName];
-    return [self itemWithImage:image block:block];
-}
-
-+ (UIBarButtonItem *)itemWithImage:(UIImage *)image target:(nullable id)target action:(SEL)action{
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.j_size = image.size;
-    [button setImage:image forState:UIControlStateNormal];
-    [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithCustomView:button];
-    return item;
-}
-+ (UIBarButtonItem *)itemWithImageName:(NSString *)imageName target:(nullable id)target action:(SEL)action{
-    UIImage *image = [UIImage imageNamed:imageName];
-    return [self itemWithImage:image target:target action:action];
-}
-
-+ (UIBarButtonItem *)itemWithNormalTitle:(NSAttributedString *)normalTitle
-                        highlightedTitle:(NSAttributedString *)highlightedTitle
-                                   block:(void (^)(id sender))block{
-    UIButton *button  = [self buttonWithNormalTitle:normalTitle highlightedTitle:highlightedTitle];
-    [button jm_addActionForEvent:UIControlEventTouchUpInside block:block];
-    UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithCustomView:button];
-    return item;
-}
-
-+ (UIBarButtonItem *)itemWithTitle:(NSString *)title block:(nullable void (^)(id sender))block{
-    NSArray <NSAttributedString *>*titles = [self itemAttributedTitlesWithTitle:title];
-    return [self itemWithNormalTitle:titles.firstObject highlightedTitle:titles.lastObject block:block];
-}
-
-+ (UIBarButtonItem *)itemWithNormalTitle:(NSAttributedString *)normalTitle
-                        highlightedTitle:(nullable NSAttributedString *)highlightedTitle
-                                  target:(nullable id)target
-                                  action:(SEL)action{
-    UIButton *button = [self buttonWithNormalTitle:normalTitle highlightedTitle:highlightedTitle];
-    [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
-    return [UIBarButtonItem new];
-}
-
-+ (UIBarButtonItem *)itemWithTitle:(NSString *)title target:(nullable id)target action:(SEL)action{
-    NSArray <NSAttributedString *>*titles = [self itemAttributedTitlesWithTitle:title];
-    return [self itemWithNormalTitle:titles.firstObject highlightedTitle:titles.lastObject target:target action:action];
-}
-
-+ (UIButton *)buttonWithNormalTitle:(NSAttributedString *)normalTitle
-                   highlightedTitle:(NSAttributedString *)highlightedTitle{
-    UIButton *button  = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setAttributedTitle:normalTitle forState:UIControlStateNormal];
-    NSAttributedString *highlighted = highlightedTitle;
-    if (!highlighted) {
-        NSMutableAttributedString *mutableStr = [normalTitle mutableCopy];
-        [mutableStr addAttribute:NSForegroundColorAttributeName value:[UIColor lightGrayColor] range:NSMakeRange(0, normalTitle.length)];
-        highlighted = [mutableStr copy];
-    }
-    [button setAttributedTitle:highlighted forState:UIControlStateHighlighted];
-    return button;
-}
-+ (NSArray <NSAttributedString *>*)itemAttributedTitlesWithTitle:(NSString *)title{
-    NSDictionary *normalAttributes = [[UIBarButtonItem appearance] titleTextAttributesForState:UIControlStateNormal];
-    NSDictionary *highlightedAttributes = [[UIBarButtonItem appearance] titleTextAttributesForState:UIControlStateHighlighted];
-    if (!normalAttributes) {
-        normalAttributes = @{NSFontAttributeName:[UIFont systemFontOfSize:16]};
-    }
-    if (!highlightedAttributes) {
-        highlightedAttributes = @{NSFontAttributeName:normalAttributes[NSFontAttributeName],
-                                  NSForegroundColorAttributeName:[UIColor lightGrayColor]};
-    }
-    NSAttributedString *normalTitle = [[NSAttributedString alloc]initWithString:title attributes:normalAttributes];
-    NSAttributedString *highlightedTitle = [[NSAttributedString alloc]initWithString:title attributes:highlightedAttributes];
-    
-    return @[normalTitle,highlightedTitle];
-}
-
-- (BOOL)autoResize{
-    NSNumber *resize = objc_getAssociatedObject(self, &JIMNavigationBarAutoResizeKey);
-    return resize?resize.boolValue : YES;
-}
-
-- (void)setAutoResize:(BOOL)autoResize{
-    objc_setAssociatedObject(self, &JIMNavigationBarAutoResizeKey, @(autoResize), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-@end

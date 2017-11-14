@@ -1,13 +1,15 @@
 //
 //  JIMNavigationBar.h
 //  JimNavigationBar
-//
+//  GitHub: https://github.com/SilverJkm/JIMNavigationBar
 //  Created by Jiang on 2017/9/27.
 //  Copyright © 2017年 Jiang. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import "UIViewController+JIMNavigationBar.h"
+#import "UIBarButtonItem+JIMNavigationBar.h"
+
 extern const double JIMNavigationBar_ToolBarWidthExtend;
 extern const double JIMNavigationBarHeight;
 NS_ASSUME_NONNULL_BEGIN

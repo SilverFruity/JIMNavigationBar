@@ -80,4 +80,7 @@
     CGFloat alpha = 1 - (scrollView.contentOffset.y + scrollView.contentInset.top) / value;
     self.jimNavigationBar.coverColor = [self.color colorWithAlphaComponent:alpha>1?1:alpha];
 }
+-(void)dealloc{
+    
+}
 @end

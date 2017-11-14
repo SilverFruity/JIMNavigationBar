@@ -19,6 +19,9 @@
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="7Ew-u1-C06">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="7dB-Ry-YLM"/>
                     </connections>
@@ -123,7 +126,7 @@
                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
                                 <state key="normal" title="Button"/>
                                 <connections>
-                                    <segue destination="DTs-Ch-QyA" kind="show" id="QDz-Vy-hEd"/>
+                                    <segue destination="rMo-EC-dQx" kind="show" id="Y26-8U-YKD"/>
                                 </connections>
                             </button>
                         </barButtonItem>
@@ -133,20 +136,32 @@
             </objects>
             <point key="canvasLocation" x="378" y="116"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="j4c-xF-XZX">
+        <!--Last View Controller-->
+        <scene sceneID="NKq-7g-wfo">
             <objects>
-                <viewController id="DTs-Ch-QyA" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="qAt-kj-91H">
+                <viewController id="rMo-EC-dQx" customClass="LastViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="mb3-6w-JFE">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <viewLayoutGuide key="safeArea" id="wci-f2-23h"/>
+                        <viewLayoutGuide key="safeArea" id="iBd-UT-Jo3"/>
                     </view>
+                    <navigationItem key="navigationItem" id="suJ-zb-Z12">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="Rzk-cn-aH2">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="CfP-Tf-4z0">
+                                <rect key="frame" x="283" y="7" width="76" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="pop to root"/>
+                                <connections>
+                                    <action selector="popToRoot:" destination="rMo-EC-dQx" eventType="touchUpInside" id="VJl-rQ-u1f"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="xI8-EJ-Ycg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FwK-KJ-UkT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1090" y="116"/>
+            <point key="canvasLocation" x="1142" y="116"/>
         </scene>
     </scenes>
 </document>
