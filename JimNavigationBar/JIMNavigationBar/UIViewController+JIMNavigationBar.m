@@ -75,8 +75,10 @@ static char JIMNavigationHiddenSysNavigationBarKey;
 
 #if !__has_feature(objc_arc)
 - (void)j_dealloc{
-    [self.jimNavigationBar removeCallerObservers:self];
-    [self.jimNavigationBar release];
+    if (objc_getAssociatedObject(self, &JIMNavigationBarKey)) { //避免在dealloc的时候调用懒加载导致崩溃
+        [self.jimNavigationBar removeCallerObservers:self];
+        [self.jimNavigationBar release];
+    }
     NSNumber *hasSet = objc_getAssociatedObject(self, &JIMNavigationBarHasSetKey);
     if (hasSet) [hasSet release];
     NSNumber *hidden = objc_getAssociatedObject(self, &JIMNavigationHiddenSysNavigationBarKey);
@@ -129,6 +131,7 @@ static char JIMNavigationHiddenSysNavigationBarKey;
     if (self.jimNavigationBarHasSet) return;
     
     if (self.navigationController && self.hiddenSysNavigationBar) {
+        self.navigationController.view.backgroundColor = [UIColor whiteColor];//不设置颜色会导致在半透明的时候出现黑框
         [self.view addSubview:self.jimNavigationBar];
         CGRect naviFrame = self.navigationController.navigationBar.frame;
         CGFloat widthExtend = JIMNavigationBar_ToolBarWidthExtend > 0 ? JIMNavigationBar_ToolBarWidthExtend : 0;
