@@ -18,9 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
  **/
 @interface UIViewController(JIMNavigationBar)
 +(void)JIMNavigationBarMethodExChange; //在想要添加JIMNavigationBar的基类的load方法中调用
-@property (nonatomic, assign)BOOL hasSet;
-@property (nonatomic, assign)BOOL hiddenSysNavigationBar;
 @property (nonatomic, strong, readonly)JIMNavigationBar *jimNavigationBar;
+@property (nonatomic, assign)BOOL jimNavigationBarHasSet;
+@property (nonatomic, assign)BOOL hiddenSysNavigationBar;
 - (BOOL)isRootViewController;
 @end
 NS_ASSUME_NONNULL_END

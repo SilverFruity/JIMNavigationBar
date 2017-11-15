@@ -10,7 +10,7 @@
 #import <objc/runtime.h>
 
 static char JIMNavigationBarKey;
-static char JIMNavigationSetKey;
+static char JIMNavigationBarHasSetKey;
 static char JIMNavigationHiddenSysNavigationBarKey;
 
 @implementation UIViewController(JIMNavigationBar)
@@ -51,11 +51,11 @@ static char JIMNavigationHiddenSysNavigationBarKey;
 
 
 #if !__has_feature(objc_arc)
-    Method dealloc = class_getInstanceMethod(self, @selector(dealloc));
+    Method dealloc = class_getInstanceMethod(self, @selector(dealloc));  //只有在MRC下才能获取到dealloc方法
     Method j_dealloc = class_getInstanceMethod(self, @selector(j_dealloc));
     method_exchangeImplementations(dealloc, j_dealloc);
     #if DEBUG
-    //如果是UIViewController的子类，则不能交换UIViewController的方法实现，需要自己实现改方法并调用super
+    //如果是UIViewController的子类，则不能交换UIViewController的方法实现
     if (![NSStringFromClass(self) isEqualToString:@"UIViewController"]) {
         IMP dealloc1 = class_getMethodImplementation(self, @selector(dealloc));
         IMP dealloc2 = class_getMethodImplementation([UIViewController class], @selector(dealloc));
@@ -75,13 +75,12 @@ static char JIMNavigationHiddenSysNavigationBarKey;
 
 #if !__has_feature(objc_arc)
 - (void)j_dealloc{
-    //移除 KVO
-    [self removeObserver:self forKeyPath:@"navigationItem.leftBarButtonItem"];
-    [self removeObserver:self forKeyPath:@"navigationItem.leftBarButtonItems"];
-    [self removeObserver:self forKeyPath:@"navigationItem.rightBarButtonItem"];
-    [self removeObserver:self forKeyPath:@"navigationItem.rightBarButtonItems"];
-    [self removeObserver:self forKeyPath:@"navigationItem.title"];
-    [self removeObserver:self forKeyPath:@"navigationItem.titleView"];
+    [self.jimNavigationBar removeCallerObservers:self];
+    [self.jimNavigationBar release];
+    NSNumber *hasSet = objc_getAssociatedObject(self, &JIMNavigationBarHasSetKey);
+    if (hasSet) [hasSet release];
+    NSNumber *hidden = objc_getAssociatedObject(self, &JIMNavigationHiddenSysNavigationBarKey);
+    if (hidden) [hidden release];
     [self j_dealloc];
 }
 #endif
@@ -98,12 +97,15 @@ static char JIMNavigationHiddenSysNavigationBarKey;
     }
     return bar;
 }
-- (BOOL)hasSet{
-    NSNumber *has = objc_getAssociatedObject(self, &JIMNavigationSetKey);
+- (BOOL)jimNavigationBarHasSet{
+    NSNumber *has = objc_getAssociatedObject(self, &JIMNavigationBarHasSetKey);
     return has ? has.boolValue : NO;
 }
-- (void)setHasSet:(BOOL)hasSet{
-    objc_setAssociatedObject(self, &JIMNavigationSetKey, @(hasSet), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
+- (void)setJimNavigationBarHasSet:(BOOL)jimNavigationBarHasSet{
+    [self willChangeValueForKey:@"jimNavigationBarHasSet"];
+    objc_setAssociatedObject(self, &JIMNavigationBarHasSetKey, @(jimNavigationBarHasSet), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    [self didChangeValueForKey:@"jimNavigationBarHasSet"];
 }
 
 - (BOOL)hiddenSysNavigationBar{
@@ -124,10 +126,10 @@ static char JIMNavigationHiddenSysNavigationBarKey;
     }
     [self.navigationController.navigationBar setHidden:self.hiddenSysNavigationBar];
     
-    if (self.hasSet) return;
+    if (self.jimNavigationBarHasSet) return;
     
     if (self.navigationController && self.hiddenSysNavigationBar) {
-        [self.view addSubview:self.jimNavigationBar];;
+        [self.view addSubview:self.jimNavigationBar];
         CGRect naviFrame = self.navigationController.navigationBar.frame;
         CGFloat widthExtend = JIMNavigationBar_ToolBarWidthExtend > 0 ? JIMNavigationBar_ToolBarWidthExtend : 0;
         CGRect barFrame = CGRectMake(-0.5 * widthExtend, 0, CGRectGetWidth(naviFrame) + widthExtend, CGRectGetHeight(naviFrame));
@@ -141,27 +143,8 @@ static char JIMNavigationHiddenSysNavigationBarKey;
 
         [self.jimNavigationBar loadItems];
 
-        self.hasSet = YES;
-
-        [self addNavigationItemsObserver];
+        self.jimNavigationBarHasSet = YES;
     }
-}
-
-- (void)addNavigationItemsObserver{
-    //KVO
-    [self addObserver:self forKeyPath:@"navigationItem.leftBarButtonItem" options:NSKeyValueObservingOptionNew context:nil];
-    [self addObserver:self forKeyPath:@"navigationItem.leftBarButtonItems" options:NSKeyValueObservingOptionNew context:nil];
-    [self addObserver:self forKeyPath:@"navigationItem.rightBarButtonItem" options:NSKeyValueObservingOptionNew context:nil];
-    [self addObserver:self forKeyPath:@"navigationItem.rightBarButtonItems" options:NSKeyValueObservingOptionNew context:nil];
-    [self addObserver:self forKeyPath:@"navigationItem.title" options:NSKeyValueObservingOptionNew context:nil];
-    [self addObserver:self forKeyPath:@"navigationItem.titleView" options:NSKeyValueObservingOptionNew context:nil];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
-    if (change[NSKeyValueChangeNewKey] == [NSNull null] || !self.hiddenSysNavigationBar) {
-        return;
-    }
-    [self.jimNavigationBar loadItems];
 }
 
 @end

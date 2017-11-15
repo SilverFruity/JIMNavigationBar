@@ -79,6 +79,7 @@ static char JIMNavigationBarAutoResizeKey;
         highlighted = [mutableStr copy];
     }
     [button setAttributedTitle:highlighted forState:UIControlStateHighlighted];
+    [button sizeToFit];
     return button;
 }
 + (NSArray <NSAttributedString *>*)itemAttributedTitlesWithTitle:(NSString *)title{

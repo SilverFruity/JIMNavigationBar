@@ -27,9 +27,7 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-}
-- (void)viewDidDisappear:(BOOL)animated{
-    [super viewDidDisappear:animated];
+//    self.navigationItem.leftBarButtonItem = [UIBarButtonItem itemWithTitle:@"GG" block:nil];
 }
 
 - (void)viewDidLoad {

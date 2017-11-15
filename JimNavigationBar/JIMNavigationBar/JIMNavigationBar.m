@@ -10,6 +10,8 @@
 #import "UIView+JimFrameExtension.h"
 #import "JIMNavigationBar.h"
 
+#define J_MORE_OR_EQUAL_IOS11 [[UIDevice currentDevice].systemVersion floatValue] >= 11.0
+#define J_LESS_THAN_IOS11 [[UIDevice currentDevice].systemVersion floatValue] < 11.0
 const double JIMNavigationBar_ToolBarWidthExtend = 32; //iOS11下UIToolbar左右两边默认边距为16，可以直接将其宽度增加32再向左移16就可以自己来控制点击范围
 const double JIMNavigationBarHeight = 44;  //navigationBar的高度
 
@@ -29,7 +31,7 @@ UIBarButtonItem * JIMBarFixSpaceItem(){
 //iOS 11
 UIBarButtonItem * JIMBarMarginItem(){
     UIBarButtonItem *item  = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    item.width = 5;
+    item.width = 10;
     return item;
 }
 
@@ -92,6 +94,34 @@ static CGFloat JIMNavigationBarDefaultReturnImageRightMargin = 10;
     JIMNavigationBarDefaultReturnImageRightMargin = rightMargin;
 }
 
+- (void)addCallerNavigationItemsObserver{
+    //KVO
+    [self.caller addObserver:self forKeyPath:@"navigationItem.leftBarButtonItem" options:NSKeyValueObservingOptionNew context:nil];
+    [self.caller addObserver:self forKeyPath:@"navigationItem.leftBarButtonItems" options:NSKeyValueObservingOptionNew context:nil];
+    [self.caller addObserver:self forKeyPath:@"navigationItem.rightBarButtonItem" options:NSKeyValueObservingOptionNew context:nil];
+    [self.caller addObserver:self forKeyPath:@"navigationItem.rightBarButtonItems" options:NSKeyValueObservingOptionNew context:nil];
+    [self.caller addObserver:self forKeyPath:@"navigationItem.title" options:NSKeyValueObservingOptionNew context:nil];
+    [self.caller addObserver:self forKeyPath:@"navigationItem.titleView" options:NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void)removeCallerObservers:(UIViewController *)caller{
+    //移除 KVO
+    [caller removeObserver:self forKeyPath:@"navigationItem.leftBarButtonItem"];
+    [caller removeObserver:self forKeyPath:@"navigationItem.leftBarButtonItems"];
+    [caller removeObserver:self forKeyPath:@"navigationItem.rightBarButtonItem"];
+    [caller removeObserver:self forKeyPath:@"navigationItem.rightBarButtonItems"];
+    [caller removeObserver:self forKeyPath:@"navigationItem.title"];
+    [caller removeObserver:self forKeyPath:@"navigationItem.titleView"];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
+    if (change[NSKeyValueChangeNewKey] == [NSNull null] || !self.caller.hiddenSysNavigationBar) {
+        return;
+    }
+    if ([keyPath hasPrefix:@"navigationItem"]) {
+        [self loadItems];
+    }
+}
 - (instancetype)initWithCaller:(UIViewController *)caller{
     self = [super initWithFrame:CGRectZero];
     self.toolbar = [[JIMToolBar alloc]initWithFrame:self.bounds];
@@ -108,12 +138,15 @@ static CGFloat JIMNavigationBarDefaultReturnImageRightMargin = 10;
     }
     button.j_size = JIMNavigationBarDefaultReturnImage.size;
     [button setImage:JIMNavigationBarDefaultReturnImage forState:UIControlStateNormal];
+    [self addCallerNavigationItemsObserver];
     return self;
 }
 
 
 
 - (void)loadItems{
+    [self.toolbar setItems:nil animated:NO];
+    
     NSMutableArray *items = [NSMutableArray array];
     
     //第一次显示的时候会将leftBarButtonItems设置为nil,但也会存在重新设置的情况
@@ -129,14 +162,13 @@ static CGFloat JIMNavigationBarDefaultReturnImageRightMargin = 10;
     //设置第一个button的左边距
     [self setButtonEdges:_leftItems isLeft:YES];
     
-    //如果左边按钮不存在间距 - 针对iOS11
-    if (![self hasFlexItem:_leftItems]) {
+    //如果左边按钮不存在间距 - 针对iOS11及以上
+    if (![self hasFlexItem:_leftItems] && J_MORE_OR_EQUAL_IOS11) {
         //添加左边item之间的间距
         for (NSUInteger i = 1; i < _leftItems.count; i+=2) {
             [_leftItems insertObject:JIMBarMarginItem() atIndex:i];
         }
     }
-    
     
     [items addObjectsFromArray:_leftItems];
     
@@ -148,29 +180,33 @@ static CGFloat JIMNavigationBarDefaultReturnImageRightMargin = 10;
     //设置最后一个button的右边距
     [self setButtonEdges:_rightItems isLeft:NO];
     
-    //如果右边按钮不存在间距 - 针对iOS11
-    if (![self hasFlexItem:_rightItems]) {
+    //如果右边按钮不存在间距 - 针对iOS11及以上
+    if (![self hasFlexItem:_rightItems] && J_MORE_OR_EQUAL_IOS11) {
         //添加右边item之间的间距
         for (NSUInteger i = 1; i < _rightItems.count; i+=2) {
             [_rightItems insertObject:JIMBarMarginItem() atIndex:i];
         }
     }
+
+    [items addObject:JIMBarFixSpaceItem()];
     
     UIView *view = self.caller.navigationItem.titleView;
     if (view && !CGRectEqualToRect(CGRectZero, view.frame)) {
         _titleView = view;
     }
-    [items addObject:JIMBarFixSpaceItem()];
+    
     //计算titleView合适的宽度
     if (_titleView) {
         CGFloat itemWidth = 0;
         for (UIBarButtonItem *item in _leftItems) {
             itemWidth = itemWidth + item.customView.j_size.width + item.width;
+            if (J_LESS_THAN_IOS11) itemWidth = itemWidth +  10;
         }
         for (UIBarButtonItem *item in _rightItems) {
             itemWidth = itemWidth + item.customView.j_size.width + item.width;
+            if (J_LESS_THAN_IOS11) itemWidth = itemWidth +  10;
         }
-        
+
         CGFloat titleViewMaxWidth = self.toolbar.j_width - itemWidth - JIMNavigationBar_ToolBarWidthExtend;
         if (_titleView.j_width >= titleViewMaxWidth) {
             _titleView.j_width = titleViewMaxWidth;
@@ -205,8 +241,8 @@ static CGFloat JIMNavigationBarDefaultReturnImageRightMargin = 10;
         [items addObjectsFromArray:_rightItems];
     }
     
-    self.toolbar.items = items;
-
+    [self.toolbar setItems:items];
+    
     NSUInteger totalCount = self.caller.navigationController.childViewControllers.count;
     //背景色设置，使用上一个VC的
     if (totalCount >= 2){

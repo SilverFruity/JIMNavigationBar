@@ -86,8 +86,8 @@
                             </subviews>
                             <color key="backgroundColor" red="0.37289676054771703" green="0.37289676054771703" blue="0.37289676054771703" alpha="0.19534000880281691" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
-                                <constraint firstItem="mqp-cA-znw" firstAttribute="centerY" secondItem="y6F-CZ-Lds" secondAttribute="centerY" id="OfZ-MD-7HX"/>
-                                <constraint firstItem="mqp-cA-znw" firstAttribute="centerX" secondItem="y6F-CZ-Lds" secondAttribute="centerX" id="U0B-2P-cOc"/>
+                                <constraint firstItem="mqp-cA-znw" firstAttribute="centerY" secondItem="y6F-CZ-Lds" secondAttribute="centerY" id="Lh6-tH-Q86"/>
+                                <constraint firstItem="mqp-cA-znw" firstAttribute="centerX" secondItem="y6F-CZ-Lds" secondAttribute="centerX" id="z4q-2H-94C"/>
                             </constraints>
                         </view>
                     </navigationItem>
