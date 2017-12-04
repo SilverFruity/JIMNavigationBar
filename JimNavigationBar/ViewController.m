@@ -11,28 +11,52 @@
 #import "JIMNavigationBar.h"
 
 @implementation UIViewController(JIMNavigationBarMethodExChange)
-+ (void)load{
-    //如果你的ViewController都有自定义基类，则将`UIViewController`替换为该类，如果没有就直接使用UIViewController
-    [self JIMNavigationBarMethodExChange];
-}
+
 @end
 
+@interface JIMNavigationBarContainer : UIView
+@end
+@implementation JIMNavigationBarContainer
+@end
 
 @interface ViewController ()<UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, strong)UIColor *color;
+@property (nonatomic, strong) UIView *container;
+@property (nonatomic, assign) BOOL useRealView;
 @end
 
 @implementation ViewController
-
++ (void)load{
+    //如果你的ViewController都有自定义基类，则将`UIViewController`替换为该类，如果没有就直接使用UIViewController
+    [self JIMNavigationBarMethodExChange];
+}
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-//    self.navigationItem.leftBarButtonItem = [UIBarButtonItem itemWithTitle:@"GG" block:nil];
 }
+
+- (UIView *)view{
+    return [super view];
+}
+
+- (void)loadView{
+}
+
+- (void)setView:(UIView *)view{
+    [super setView:view];
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    UIView *view1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 400, 400)];
+    view1.backgroundColor = [UIColor blackColor];
+    [self.view addSubview:view1];
+    
+    NSLog(@"%@",self.view);
+    
+    self.navigationController.navigationBar.translucent = NO;
      self.color = [UIColor colorWithRed:100.f/256.f green:149.f/256.f blue:237.f/256.f alpha:1.0];
     
     //需要注意的是: 要替代storyboard中的UINavigationBar时，需要确认item的customView一定是UIButton
@@ -44,8 +68,7 @@
     [JIMNavigationBar defaultCoverColor:self.color];
     [JIMNavigationBar defaultReturnImageLeftMargin:10];
     [JIMNavigationBar defaultReturnImageRightMargin:10];
-    
-    
+
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor],
                                                            NSFontAttributeName:[UIFont systemFontOfSize:14]}
                                                 forState:UIControlStateNormal];
@@ -69,9 +92,9 @@
     UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];
     view.backgroundColor = [UIColor grayColor];
     [self.scrollView addSubview:view];
-    
-    
+    self.useRealView = YES;
 }
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     CGFloat value = 64;
     if (scrollView.contentOffset.y > 64) return;

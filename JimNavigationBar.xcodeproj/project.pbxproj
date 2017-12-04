@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B2E15971FD57E46004E0467 /* NavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B2E15961FD57E46004E0467 /* NavigationController.m */; };
 		1B30EB9A1FA60420007B46FD /* NextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B30EB991FA60420007B46FD /* NextViewController.m */; };
 		1B7E07AD1FA223F00070FADF /* JIMNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B7E07AB1FA223CE0070FADF /* JIMNavigationBar.m */; };
 		1B7E07AE1FA223F00070FADF /* UIViewController+JIMNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B7E07A91FA223CE0070FADF /* UIViewController+JIMNavigationBar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -43,6 +44,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1B2E15951FD57E46004E0467 /* NavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NavigationController.h; sourceTree = "<group>"; };
+		1B2E15961FD57E46004E0467 /* NavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NavigationController.m; sourceTree = "<group>"; };
 		1B30EB981FA60420007B46FD /* NextViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NextViewController.h; sourceTree = "<group>"; };
 		1B30EB991FA60420007B46FD /* NextViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NextViewController.m; sourceTree = "<group>"; };
 		1B7E07A91FA223CE0070FADF /* UIViewController+JIMNavigationBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+JIMNavigationBar.m"; sourceTree = "<group>"; };
@@ -133,6 +136,8 @@
 				1B30EB991FA60420007B46FD /* NextViewController.m */,
 				1BFB0B801FBB51180054AAFB /* LastViewController.h */,
 				1BFB0B811FBB51180054AAFB /* LastViewController.m */,
+				1B2E15951FD57E46004E0467 /* NavigationController.h */,
+				1B2E15961FD57E46004E0467 /* NavigationController.m */,
 				1B974D161F7B775200D6FB26 /* Main.storyboard */,
 				1B974D191F7B775200D6FB26 /* Assets.xcassets */,
 				1B974D1B1F7B775200D6FB26 /* LaunchScreen.storyboard */,
@@ -328,6 +333,7 @@
 				1BFB0B7F1FBB4D230054AAFB /* UIBarButtonItem+JIMNavigationBar.m in Sources */,
 				1B30EB9A1FA60420007B46FD /* NextViewController.m in Sources */,
 				1B974D201F7B775200D6FB26 /* main.m in Sources */,
+				1B2E15971FD57E46004E0467 /* NavigationController.m in Sources */,
 				1BFB0B821FBB51180054AAFB /* LastViewController.m in Sources */,
 				1B974D121F7B775200D6FB26 /* AppDelegate.m in Sources */,
 			);

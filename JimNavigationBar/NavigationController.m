@@ -1,26 +1,22 @@
 //
-//  LastViewController.m
+//  NavigationController.m
 //  JimNavigationBar
 //
-//  Created by Jiang on 2017/11/15.
+//  Created by Jiang on 2017/12/4.
 //  Copyright © 2017年 Jiang. All rights reserved.
 //
 
-#import "LastViewController.h"
+#import "NavigationController.h"
 
-@interface LastViewController ()
+@interface NavigationController ()
 
 @end
 
-@implementation LastViewController
+@implementation NavigationController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     // Do any additional setup after loading the view.
-}
-- (IBAction)popToRoot:(id)sender {
-    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
