@@ -246,7 +246,11 @@ static CGFloat JIMNavigationBarDefaultReturnImageRightMargin = 10;
     NSUInteger totalCount = self.caller.navigationController.childViewControllers.count;
     //背景色设置，使用上一个VC的
     if (totalCount >= 2){
-        UIColor *targetColor = self.caller.navigationController.childViewControllers[totalCount - 2].jimNavigationBar.coverColor;
+        UIViewController *lastVc = self.caller.navigationController.childViewControllers[totalCount - 2];
+        if (!lastVc.inheritCoverColor) {
+            return;
+        }
+        UIColor *targetColor = lastVc.jimNavigationBar.coverColor;
         UIColor *currentColor = self.coverColor;
         UIColor *markColor = JIMNavigationBarDefaultCoverColor?:[UIColor clearColor];
         if (!CGColorEqualToColorIgnoreAlpha(targetColor.CGColor, markColor.CGColor)

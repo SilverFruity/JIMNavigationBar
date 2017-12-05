@@ -12,6 +12,7 @@
 static char JIMNavigationBarKey;
 static char JIMNavigationBarHasSetKey;
 static char JIMNavigationHiddenSysNavigationBarKey;
+static char JIMNavigationBarInheritColor;
 
 @implementation UIViewController(JIMNavigationBar)
 
@@ -49,6 +50,18 @@ static char JIMNavigationHiddenSysNavigationBarKey;
 #endif
     method_exchangeImplementations(viewWillAppear, j_viewWillAppear);
 
+    
+    Method viewDidLayoutSubviews = class_getInstanceMethod(self, @selector(viewDidLayoutSubviews));
+    Method j_viewDidLayoutSubviews = class_getInstanceMethod(self, @selector(j_viewDidLayoutSubviews));
+#if DEBUG
+    //如果是UIViewController的子类，则不能交换UIViewController的方法实现，需要自己实现改方法并调用super
+    if (![NSStringFromClass(self) isEqualToString:@"UIViewController"]) {
+        IMP layoutSubViews1 = class_getMethodImplementation(self, @selector(viewDidLayoutSubviews));
+        IMP layoutSubViews2 = class_getMethodImplementation([UIViewController class], @selector(viewDidLayoutSubviews));
+        NSAssert(layoutSubViews1 != layoutSubViews2, @"%@ need implement method `viewDidLayoutSubviews:`",self);
+    }
+#endif
+    method_exchangeImplementations(viewDidLayoutSubviews, j_viewDidLayoutSubviews);
 
 #if !__has_feature(objc_arc)
     Method dealloc = class_getInstanceMethod(self, @selector(dealloc));  //只有在MRC下才能获取到dealloc方法
@@ -86,7 +99,12 @@ static char JIMNavigationHiddenSysNavigationBarKey;
     [self j_dealloc];
 }
 #endif
-
+- (void)j_viewDidLayoutSubviews{
+    [self j_viewDidLayoutSubviews];
+    if (!self.jimNavigationBar.hidden) {
+        [self.view bringSubviewToFront:self.jimNavigationBar];
+    }
+}
 - (BOOL)isRootViewController{
     return self.navigationController.childViewControllers.firstObject == self;
 }
@@ -119,6 +137,13 @@ static char JIMNavigationHiddenSysNavigationBarKey;
     objc_setAssociatedObject(self, &JIMNavigationHiddenSysNavigationBarKey, @(hiddenSysNavigationBar), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
+- (BOOL)inheritCoverColor{
+    NSNumber *inherit = objc_getAssociatedObject(self, &JIMNavigationBarInheritColor);
+    return inherit ? inherit.boolValue : YES;
+}
+- (void)setInheritCoverColor:(BOOL)inheritColor{
+    objc_setAssociatedObject(self, &JIMNavigationBarInheritColor, @(inheritColor), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
 
 - (void)j_viewWillAppear:(BOOL)animated{
     [self j_viewWillAppear:animated];
@@ -128,6 +153,7 @@ static char JIMNavigationHiddenSysNavigationBarKey;
     }
     [self.navigationController.navigationBar setHidden:self.hiddenSysNavigationBar];
     
+    if (self.jimNavigationBar.hidden) return;
     if (self.jimNavigationBarHasSet) return;
     
     if (self.navigationController && self.hiddenSysNavigationBar) {

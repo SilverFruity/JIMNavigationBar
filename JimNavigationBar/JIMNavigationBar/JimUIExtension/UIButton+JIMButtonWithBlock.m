@@ -9,7 +9,7 @@
 #import "UIButton+JIMButtonWithBlock.h"
 #import <objc/runtime.h>
 
-static char *const JMBlockCacheKey = "JMBlockCacheKey";
+static char JMBlockCacheKey;
 
 @implementation UIButton (JIMButtonWithBlock)
 

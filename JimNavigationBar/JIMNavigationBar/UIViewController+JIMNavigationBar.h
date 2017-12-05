@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly)JIMNavigationBar *jimNavigationBar;
 @property (nonatomic, assign)BOOL jimNavigationBarHasSet;
 @property (nonatomic, assign)BOOL hiddenSysNavigationBar;
+@property (nonatomic, assign)BOOL inheritCoverColor; //默认使接下来push的控制器的jimNavigationbar覆盖色使用当前控制器的覆盖色
 - (BOOL)isRootViewController;
 @end
 NS_ASSUME_NONNULL_END
